@@ -1,5 +1,9 @@
 import { axiosInstance } from "./axiosInstance";
-import { SigninRequest, SigninResponse } from "../types/auth.ts";
+import {
+  MyInfoResponse,
+  SigninRequest,
+  SigninResponse,
+} from "../types/auth.ts";
 
 export const signin = async ({
   email,
@@ -13,7 +17,7 @@ export const signin = async ({
   return data;
 };
 
-export const getUserInfo = async () => {
+export const getMyInfo = async (): Promise<MyInfoResponse> => {
   const { data } = await axiosInstance.get("/users/me");
 
   return data;

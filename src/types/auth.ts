@@ -11,3 +11,15 @@ export interface SigninResponse {
     refreshToken: string;
   };
 }
+
+export interface MyInfoResponse {
+  data: {
+    id: number;
+    name: string;
+    email: string;
+    bio: null | string;
+    avatar: null | string;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
