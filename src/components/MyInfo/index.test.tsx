@@ -6,12 +6,17 @@ import MyInfo from "@/components/MyInfo/index";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode } from "react";
 import { getMyInfo } from "@/apis/auth.ts";
+import { MemoryRouter, useNavigate } from "react-router-dom";
 
 const queryClient = new QueryClient();
 const wrapper = ({ children }: { children: ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: jest.fn(),
+}));
 jest.mock("@/apis/auth.ts");
 
 const userMock: MyInfoResponse = {
@@ -27,9 +32,12 @@ const userMock: MyInfoResponse = {
 };
 
 describe("마이페이지", () => {
+  const mockNavigate = jest.fn();
+
   beforeEach(() => {
     jest.clearAllMocks();
     queryClient.clear();
+    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
   });
 
   it("(로그인 O) 유저정보가 불러와져 화면에 email과 name이 화면에 렌더링 된다.", async () => {
@@ -50,15 +58,20 @@ describe("마이페이지", () => {
     expect(screen.getByText("이메일 : zoe@naver.com")).toBeInTheDocument();
   });
 
-  // it("(로그인 X - 토큰이 없는 경우) 로그인 화면으로 이동된다.", async () => {
-  //   localStorage.removeItem("token"); // 토큰 삭제하여 로그아웃 상태로 만듦
-  //
-  //   (getMyInfo as jest.Mock).mockRejectedValue({ data: { status: 401 } });
-  //
-  //   render(<MyInfo />, { wrapper });
-  //
-  //   await waitFor(() => {
-  //     expect(mockedNavigate).toHaveBeenCalledWith("/");
-  //   });
-  // });
+  it("(로그인 X - 토큰이 없는 경우) 로그인 화면으로 이동된다.", async () => {
+    localStorage.removeItem("accessToken"); // 토큰 삭제하여 로그아웃 상태로 만듦
+
+    // initialEntries는 테스트시 처음 사용할 url
+    // useRouter 사용시에 MemoryRouter를 사용해야지 정상 동작 MemoryRouter는 브라우저의 url을 변경하지 않고 메모리에서만 경로를 관리
+    render(
+      <MemoryRouter initialEntries={["/my"]}>
+        <MyInfo />
+      </MemoryRouter>,
+      { wrapper },
+    );
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith("/");
+    });
+  });
 });

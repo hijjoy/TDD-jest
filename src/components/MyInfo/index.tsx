@@ -1,18 +1,20 @@
 import useGetMyInfo from "@/hooks/queries/useGetMyInfo.ts";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function MyInfo() {
   const token = localStorage.getItem("accessToken");
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const { data } = useGetMyInfo(token as string);
+  const { data, isError } = useGetMyInfo(token as string);
 
   const { email, name } = data ?? {};
 
-  // useEffect(() => {
-  //   if (!token || isError) {
-  //     navigate("/");
-  //   }
-  // }, [token, navigate, isError]);
+  useEffect(() => {
+    if (!token || isError) {
+      navigate("/");
+    }
+  }, [token, navigate, isError]);
 
   return (
     <div className={"flex flex-col items-center py-10 gap-5"}>
