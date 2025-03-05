@@ -9,6 +9,7 @@ const config: Config = {
   },
   moduleNameMapper: {
     "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/fileMock.ts",
+    "^@/(.*)$": "<rootDir>/src/$1", // @ 경로 인식하기 위해 추가
   },
 };
 
