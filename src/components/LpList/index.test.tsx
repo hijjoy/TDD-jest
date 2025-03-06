@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import useGetInfiniteLps from "@/hooks/queries/useGetInfiniteLps.ts";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, renderHook, screen, waitFor } from "@testing-library/react";
 
 import { QueryClient } from "@tanstack/react-query";
 import LpList from "@/components/LpList/index.tsx";
@@ -41,9 +41,8 @@ describe("LpList", () => {
       isFetching: false,
       hasNextPage: true,
       fetchNextPage: mockFetchNextPage,
+      isSuccess: true,
     });
-
-    // const { result } = renderHook(() => useGetInfiniteLps(), { wrapper });
 
     // 내부에 navigation 이 있어서 MemoryRouter처리
     render(
@@ -54,9 +53,11 @@ describe("LpList", () => {
     );
 
     // 데이터가 불러와지는지 확인
-    await waitFor(() => {
-      expect(screen.getByText("LP 1")).toBeInTheDocument();
-    });
+    const { result } = renderHook(() => useGetInfiniteLps(), { wrapper });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    // 화면에 렌더링 되는지 확인
+    expect(screen.getByText("LP 1")).toBeInTheDocument();
   });
 
   it("inView가 true이고 hasNextPage가 true일 때 fetchNextPage가 호출되는가", async () => {
