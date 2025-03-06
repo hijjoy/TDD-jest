@@ -1,1 +1,23 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+#root {
+    background-color: #f1ede8;
+    width: 768px;
+    min-height: 100vh;
+}
+
+button {
+    cursor: pointer;
+}

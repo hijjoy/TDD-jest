@@ -11,6 +11,7 @@ const config: Config = {
     "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/fileMock.ts",
     "^@/(.*)$": "<rootDir>/src/$1", // @ 경로 인식하기 위해 추가
   },
+  transformIgnorePatterns: ["node_modules/(?!(your-module)/)"],
 };
 
 export default config;
