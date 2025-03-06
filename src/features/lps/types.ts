@@ -1,6 +1,6 @@
 import { CommonResponse } from "@/shared/types/common.ts";
 
-type LikeDto = {
+export type LikeDto = {
   id: number;
   userId: number;
   lpId: number;

@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useGetLpDetail } from "@features/lps/hooks/use-get-lp-detail";
+import LikeButton from "@features/like/components/like-button.tsx";
+import { LikeDto } from "@features/lps/types.ts";
 
 export default function LpDetailPage() {
   const { id } = useParams();
 
   const { data } = useGetLpDetail(Number(id));
-  const { thumbnail, title, author } = data ?? {};
+  const { thumbnail, title, author, likes } = data ?? {};
 
   return (
     <div
@@ -23,7 +25,10 @@ export default function LpDetailPage() {
         />
       </div>
       <div className={"absolute bottom-48 left-10"}>
-        <p className={"text-black text-2xl font-bold"}>{title}</p>
+        <div className={"flex  items-center  gap-2"}>
+          <p className={"text-black text-2xl font-bold"}>{title}</p>
+          <LikeButton likes={likes as LikeDto[]} />
+        </div>
         <p className={"text-black text-base opacity-80"}>{author?.name}</p>
       </div>
     </div>
