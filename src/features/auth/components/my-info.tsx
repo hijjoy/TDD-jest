@@ -1,0 +1,28 @@
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import useGetMyInfo from "@features/auth/hooks/use-get-my-info";
+
+export default function MyInfo() {
+  const token = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
+
+  const { data, isError } = useGetMyInfo(token as string);
+
+  const { email, name } = data ?? {};
+
+  useEffect(() => {
+    if (!token || isError) {
+      navigate("/");
+    }
+  }, [token, navigate, isError]);
+
+  return (
+    <div className={"flex flex-col items-center py-10 gap-5"}>
+      <h1>내 정보</h1>
+      <div>
+        <p>이름 : {name}</p>
+        <p>이메일 : {email}</p>
+      </div>
+    </div>
+  );
+}

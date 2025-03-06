@@ -9,6 +9,7 @@ export default defineConfig({
     alias: {
       "@": "/src",
       "@icons": "/src/assets/icons",
+      "@features": "/src/features",
     },
   },
 });
