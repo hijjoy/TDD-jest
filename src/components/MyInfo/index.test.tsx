@@ -42,7 +42,7 @@ describe("마이페이지", () => {
 
   it("(로그인 O) 유저정보가 불러와져 화면에 email과 name이 화면에 렌더링 된다.", async () => {
     localStorage.setItem("accessToken", "로그인됨"); // 로그인이 되었다고 가정
-    (getMyInfo as jest.Mock).mockResolvedValue({ data: userMock.data });
+    (getMyInfo as jest.Mock).mockReturnValue({ data: userMock.data });
 
     const { result } = renderHook(() => useGetMyInfo("로그인됨"), {
       wrapper,
